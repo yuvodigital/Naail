@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nail Atelier | Boka din tid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #fffaf8;
+        --card: #fffdfb;
+        --ink: #2d1d24;
+        --muted: #6d5961;
+        --line: rgba(78, 47, 58, 0.12);
+        --primary: #d7778b;
+        --primary-deep: #b85f75;
+        --soft: #f7dfe4;
+        --success: #1d8f5a;
+        --shadow: 0 25px 60px rgba(132, 89, 100, 0.16);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Inter", Arial, sans-serif;
+        background: linear-gradient(180deg, #f8f3ed 0%, #f3efe9 100%);
+        color: var(--ink);
+      }
+
+      body {
+        min-height: 100vh;
+        padding: 36px 18px;
+      }
+
+      .page-shell {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 8px 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary) 0%, #ecb3bf 100%);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      .toplink {
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 0.9rem;
+        opacity: 0.75;
+      }
+
+      .booking-card {
+        display: grid;
+        grid-template-columns: 1fr;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .booking-side {
+        padding: 36px 30px;
+        background: linear-gradient(180deg, #fefffd 0%, #f7f3ee 100%);
+        border-right: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0 0 16px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .booking-hero {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.3rem, 4vw, 3.4rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+      }
+
+      .lead {
+        color: var(--muted);
+        line-height: 1.6;
+        margin: 18px 0 0;
+        max-width: 640px;
+      }
+
+      .summary {
+        display: grid;
+        gap: 14px;
+      }
+
+      .summary-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255,255,255,0.35);
+      }
+
+      .summary-item > div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .summary-item strong {
+        font-size: 0.95rem;
+      }
+
+      .summary-item span {
+        color: var(--muted);
+        font-size: 0.83rem;
+      }
+
+      .summary-item .pill {
+        background: var(--soft);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 7px 11px;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .booking-main {
+        padding: 32px 28px 28px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .meta-tag {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(212, 161, 93, 0.35);
+        border-radius: 999px;
+        padding: 7px 14px;
+        background: rgba(212, 161, 93, 0.08);
+        color: #7b521d;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 26px;
+        flex-wrap: wrap;
+      }
+
+      .step-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: rgba(23,22,18,0.05);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-weight: 800;
+      }
+
+      .step-pill.active {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #fff;
+      }
+
+      .step-label {
+        font-size: 0.73rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .service-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+
+      .service-option {
+        appearance: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 6px;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 18px;
+        padding: 16px 14px;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        min-height: 128px;
+      }
+
+      .service-option:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 18px rgba(23,22,18,0.04);
+      }
+
+      .service-option.active {
+        border-color: rgba(212, 161, 93, 0.8);
+        background: linear-gradient(180deg, rgba(212, 161, 93, 0.1), rgba(255,255,255,0.96));
+        box-shadow: inset 0 0 0 1px rgba(212, 161, 93, 0.2), 0 12px 22px rgba(212, 161, 93, 0.08);
+      }
+
+      .service-option strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .service-option small {
+        display: block;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .service-option .price {
+        display: inline-flex;
+        align-self: flex-start;
+        margin-top: auto;
+        font-weight: 800;
+        color: var(--ink);
+      }
+
+      .choice-panel {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px;
+        background: rgba(255,255,255,0.45);
+      }
+
+      .booking-step {
+        display: none;
+      }
+
+      .booking-step.active {
+        display: block;
+        animation: fadeIn 0.2s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .time-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .slot-chip {
+        appearance: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+        color: var(--ink);
+        padding: 12px 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .slot-chip.active {
+        background: linear-gradient(135deg, var(--ink), #2d2a27);
+        border-color: var(--ink);
+        color: #fff;
+        box-shadow: 0 12px 20px rgba(23,22,18,0.12);
+      }
+
+      .date-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .date-chip {
+        appearance: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        color: var(--ink);
+        padding: 14px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .date-grid-placeholder {
+        display: none;
+      }
+
+      .date-chip strong {
+        display: block;
+        font-size: 0.9rem;
+      }
+
+      .date-chip span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.72rem;
+        margin-top: 2px;
+      }
+
+      .date-chip.active {
+        background: linear-gradient(180deg, rgba(212, 161, 93, 0.12), rgba(255,255,255,0.9));
+        border-color: rgba(212, 161, 93, 0.8);
+        box-shadow: inset 0 0 0 1px rgba(212, 161, 93, 0.2);
+      }
+
+      .form-wrap {
+        margin-top: 22px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 0.86rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        color: var(--ink);
+        padding: 13px 14px;
+        font: inherit;
+      }
+
+      input[readonly] {
+        background: rgba(23,22,18,0.02);
+      }
+
+      .primary-btn {
+        border: none;
+        border-radius: 14px;
+        padding: 16px 18px;
+        background: linear-gradient(135deg, var(--ink), #2d2a27);
+        color: #fff;
+        font-weight: 800;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        box-shadow: 0 18px 28px rgba(23,22,18,0.14);
+      }
+
+      .primary-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .secondary-btn {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 18px;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .step-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .success {
+        min-height: 28px;
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      @media (max-width: 900px) {
+        .booking-card {
+          grid-template-columns: 1fr;
+        }
+
+        .booking-side {
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+      }
+
+      @media (max-width: 580px) {
+        .service-list,
+        .date-grid,
+        .time-grid,
+        .field-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand">
+          <a href="index.html" style="display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;">
+            <span class="brand-mark">NA</span>
+            <span>NAIL ATELIER</span>
+          </a>
+        </div>
+
+        <a class="toplink" href="index.html#kontakt">Besök oss</a>
+      </header>
+
+      <main class="booking-card">
+        <section class="booking-main" style="width: 100%;">
+          <div class="booking-hero" style="margin-bottom: 22px;">
+            <p class="eyebrow">Boka tid</p>
+            <h1>Finjusterade<br />naglar, helt för dig.</h1>
+            <p class="lead">Välj en behandling, boka en tid och skicka in din förfrågan på mindre än en minut.</p>
+          </div>
+          <div class="step-indicator" aria-label="Booking steps">
+            <span class="step-pill active">1</span>
+            <span class="step-label">Tjänst</span>
+            <span class="step-pill">2</span>
+            <span class="step-label">Datum</span>
+            <span class="step-pill">3</span>
+            <span class="step-label">Tid</span>
+            <span class="step-pill">4</span>
+            <span class="step-label">Detaljer</span>
+          </div>
+
+          <div class="booking-step active" data-step="0">
+            <div class="section-head">
+              <h2>Välj din behandling</h2>
+              <span class="meta-tag">Onlinebokning</span>
+            </div>
+
+            <div class="service-list" id="serviceList">
+              <button class="service-option active" type="button" data-name="Classic Manicure" data-price="349 kr">
+                <strong>Classic Manicure</strong>
+                <small>Formning, vård &amp; finish</small>
+                <span class="price">349 kr</span>
+              </button>
+
+              <button class="service-option" type="button" data-name="Gel-Naglar" data-price="599 kr">
+                <strong>Gel-Naglar</strong>
+                <small>Elegant och långvarig finish</small>
+                <span class="price">599 kr</span>
+              </button>
+
+              <button class="service-option" type="button" data-name="Design &amp; Art" data-price="799 kr">
+                <strong>Design &amp; Art</strong>
+                <small>Personlig nail art</small>
+                <span class="price">799 kr</span>
+              </button>
+
+              <button class="service-option" type="button" data-name="Pedikyr" data-price="499 kr">
+                <strong>Pedikyr</strong>
+                <small>Avkopplande och skön</small>
+                <span class="price">499 kr</span>
+              </button>
+            </div>
+
+            <div class="step-actions">
+              <div></div>
+              <button type="button" class="primary-btn next-step">Nästa</button>
+            </div>
+          </div>
+
+          <div class="booking-step" data-step="1">
+            <div class="section-head">
+              <h2>Välj datum</h2>
+            </div>
+
+            <div class="choice-panel">
+              <div class="date-grid" id="dateGrid"></div>
+            </div>
+
+            <div class="step-actions">
+              <button type="button" class="secondary-btn prev-step">Tillbaka</button>
+              <button type="button" class="primary-btn next-step">Fortsätt</button>
+            </div>
+          </div>
+
+          <div class="booking-step" data-step="2">
+            <div class="section-head">
+              <h2>Välj tid</h2>
+            </div>
+
+            <div class="choice-panel">
+              <div class="time-grid" id="timeGrid"></div>
+            </div>
+
+            <div class="step-actions">
+              <button type="button" class="secondary-btn prev-step">Tillbaka</button>
+              <button type="button" class="primary-btn next-step">Fortsätt</button>
+            </div>
+          </div>
+
+          <div class="booking-step" data-step="3">
+            <div class="section-head">
+              <h2>Berätta om dig</h2>
+            </div>
+
+            <form id="bookingForm" class="form-wrap">
+              <input id="shopId" name="shopId" type="hidden" value="nailatelier" />
+              <input id="customerId" name="customerId" type="hidden" value="customer-temp" />
+              <input id="bookingId" name="bookingId" type="hidden" value="" />
+              <input id="serviceName" name="service" type="hidden" value="Classic Manicure" />
+              <input id="bookingDate" name="date" type="hidden" value="2026-10-05" />
+              <input id="bookingTime" name="time" type="hidden" value="09:00" />
+
+              <div class="field-grid">
+                <label>
+                  Namn
+                  <input id="customerName" name="name" type="text" placeholder="Ditt namn" required />
+                </label>
+
+                <label>
+                  E-post
+                  <input id="customerEmail" name="email" type="email" placeholder="namn@gmail.com" required />
+                </label>
+              </div>
+
+              <div class="field-grid">
+                <label>
+                  Telefonnummer
+                  <input id="customerPhone" name="phone" type="tel" placeholder="070-123 45 67" required />
+                </label>
+
+                <div aria-hidden="true"></div>
+              </div>
+
+              <div class="step-actions">
+                <button type="button" class="secondary-btn prev-step">Tillbaka</button>
+                <button type="submit" class="primary-btn">Skicka bokningsförfrågan</button>
+              </div>
+              <p id="bookingStatus" class="success" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const serviceButtons = document.querySelectorAll('.service-option');
+      const dateGrid = document.getElementById('dateGrid');
+      const timeGrid = document.getElementById('timeGrid');
+      const bookingSteps = document.querySelectorAll('.booking-step');
+      const stepPills = document.querySelectorAll('.step-pill');
+
+      const shopId = document.getElementById('shopId');
+      const customerId = document.getElementById('customerId');
+      const bookingId = document.getElementById('bookingId');
+      const serviceName = document.getElementById('serviceName');
+      const bookingDate = document.getElementById('bookingDate');
+      const bookingTime = document.getElementById('bookingTime');
+      const bookingForm = document.getElementById('bookingForm');
+      const bookingStatus = document.getElementById('bookingStatus');
+
+      const availableSlots = ['09:00', '10:30', '12:00', '14:00', '16:30', '18:00'];
+      let currentStep = 0;
+
+      function formatDateLabel(dateObj) {
+        return new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(dateObj);
+      }
+
+      function getNextDates() {
+        const dates = [];
+        const today = new Date();
+
+        for (let index = 0; index < 6; index += 1) {
+          const date = new Date(today);
+          date.setDate(today.getDate() + index);
+          dates.push(date);
+        }
+
+        return dates;
+      }
+
+      function renderDateOptions() {
+        const dates = getNextDates();
+        const firstDate = dates[0];
+
+        dateGrid.innerHTML = dates.map((date, index) => {
+          const iso = date.toISOString().split('T')[0];
+          const label = formatDateLabel(date);
+          const isActive = index === 0;
+          return `
+            <button class="date-chip ${isActive ? 'active' : ''}" type="button" data-date="${iso}" data-label="${label}">
+              <strong>${label.split(' ')[0]}</strong>
+              <span>${label.split(' ').slice(1).join(' ')}</span>
+            </button>
+          `;
+        }).join('');
+
+        bookingDate.value = firstDate.toISOString().split('T')[0];
+        bookingDate.dataset.value = firstDate.toISOString().split('T')[0];
+      }
+
+      function renderTimeOptions() {
+        timeGrid.innerHTML = availableSlots.map((slot, index) => `
+          <button class="slot-chip ${index === 0 ? 'active' : ''}" type="button" data-time="${slot}">${slot}</button>
+        `).join('');
+
+        bookingTime.value = availableSlots[0];
+      }
+
+      function syncSummary() {
+        const activeDate = document.querySelector('.date-chip.active');
+        const activeService = document.querySelector('.service-option.active');
+
+        if (serviceName && activeService) {
+          serviceName.value = activeService.dataset.name;
+        }
+
+        if (bookingDate && activeDate) {
+          bookingDate.value = activeDate.dataset.date;
+        }
+
+        if (bookingTime && !bookingTime.value) {
+          bookingTime.value = availableSlots[0];
+        }
+      }
+
+      function updateStepIndicator() {
+        stepPills.forEach((pill, index) => {
+          pill.classList.toggle('active', index === currentStep);
+        });
+      }
+
+      function updateStepView() {
+        bookingSteps.forEach((step, index) => {
+          step.classList.toggle('active', index === currentStep);
+        });
+        updateStepIndicator();
+      }
+
+      function goToStep(nextStep) {
+        currentStep = Math.max(0, Math.min(nextStep, bookingSteps.length - 1));
+        updateStepView();
+      }
+
+      serviceButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          serviceButtons.forEach((item) => item.classList.toggle('active', item === button));
+          serviceName.value = button.dataset.name;
+          syncSummary();
+          goToStep(1);
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        const dateButton = event.target.closest('.date-chip');
+        if (dateButton) {
+          document.querySelectorAll('.date-chip').forEach((item) => item.classList.toggle('active', item === dateButton));
+          bookingDate.value = dateButton.dataset.date;
+          syncSummary();
+          goToStep(2);
+          return;
+        }
+
+        const timeButton = event.target.closest('.slot-chip');
+        if (timeButton) {
+          document.querySelectorAll('.slot-chip').forEach((item) => item.classList.toggle('active', item === timeButton));
+          bookingTime.value = timeButton.dataset.time;
+          syncSummary();
+          goToStep(3);
+          return;
+        }
+
+        const nextButton = event.target.closest('.next-step');
+        if (nextButton) {
+          goToStep(currentStep + 1);
+          return;
+        }
+
+        const prevButton = event.target.closest('.prev-step');
+        if (prevButton) {
+          goToStep(currentStep - 1);
+        }
+      });
+
+      bookingForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const customerName = document.getElementById('customerName').value.trim();
+        const payload = {
+          bookingId: bookingId.value || `bk-${Date.now()}`,
+          shopId: shopId.value || 'noir',
+          customerId: customerId.value || `customer-${Date.now()}`,
+          customer: customerName,
+          email: document.getElementById('customerEmail').value.trim(),
+          phone: document.getElementById('customerPhone').value.trim(),
+          service: serviceName.value,
+          serviceId: serviceName.value || 'svc-1',
+          date: bookingDate.value,
+          time: bookingTime.value,
+          source: 'NOIR Website',
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        };
+
+        const queue = JSON.parse(localStorage.getItem('noir_booking_queue') || '[]');
+        queue.push({
+          ...payload,
+          sourceUrl: window.location.href,
+          source: 'NOIR Website'
+        });
+        localStorage.setItem('noir_booking_queue', JSON.stringify(queue));
+
+        bookingStatus.textContent = 'Din bokning har skickats till adminpanelen.';
+        bookingForm.reset();
+        bookingId.value = '';
+        customerId.value = `customer-${Date.now()}`;
+        serviceName.value = 'Classic Manicure';
+        bookingDate.value = document.querySelector('.date-chip')?.dataset.date || new Date().toISOString().split('T')[0];
+        bookingTime.value = availableSlots[0];
+        serviceButtons.forEach((item) => item.classList.toggle('active', item.dataset.name === 'Classic Manicure'));
+        document.querySelectorAll('.date-chip').forEach((item, index) => item.classList.toggle('active', index === 0));
+        document.querySelectorAll('.slot-chip').forEach((item, index) => item.classList.toggle('active', index === 0));
+        syncSummary();
+      });
+
+      renderDateOptions();
+      renderTimeOptions();
+      syncSummary();
+      updateStepView();
+    </script>
+  </body>
+</html>
